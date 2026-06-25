@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "День‑приключение",
+  title: "remembr",
   description: "Каждый день — маленькое приключение",
 };
 

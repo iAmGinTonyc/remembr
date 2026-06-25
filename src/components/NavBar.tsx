@@ -18,7 +18,7 @@ export default function NavBar() {
       {/* Десктоп: верхний хедер */}
       <header className="hidden sm:flex sticky top-0 z-20 items-center justify-between border-b border-zinc-200 bg-white/90 backdrop-blur px-6 py-3">
         <Link href="/" className="font-semibold text-zinc-900">
-          День‑приключение
+          remembr
         </Link>
         <nav className="flex gap-1">
           {NAV_ITEMS.map((item) => {
