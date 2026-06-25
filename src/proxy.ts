@@ -51,7 +51,16 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (data.user && request.nextUrl.pathname !== "/onboarding" && !isPublicPath) {
+  // Профиль проверяем в БД только один раз — дальше доверяем cookie, чтобы не
+  // дёргать Supabase на каждую навигацию (заметная задержка на каждом клике).
+  const onboardedCookie = request.cookies.get("onboarded")?.value === "1";
+
+  if (
+    data.user &&
+    !onboardedCookie &&
+    request.nextUrl.pathname !== "/onboarding" &&
+    !isPublicPath
+  ) {
     const { data: profile } = await supabase
       .from("profiles")
       .select("birth_date")
@@ -61,6 +70,13 @@ export async function proxy(request: NextRequest) {
     if (!profile?.birth_date) {
       return NextResponse.redirect(new URL("/onboarding", request.url));
     }
+
+    response.cookies.set("onboarded", "1", {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+      httpOnly: true,
+      sameSite: "lax",
+    });
   }
 
   return response;

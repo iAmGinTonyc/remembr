@@ -67,6 +67,9 @@ export default function OnboardingPage() {
       setError(updateError.message);
       return;
     }
+
+    // Чтобы proxy.ts не делал лишний запрос в БД на следующей навигации.
+    document.cookie = `onboarded=1; path=/; max-age=${60 * 60 * 24 * 365}`;
     router.push("/");
     router.refresh();
   };

@@ -25,6 +25,7 @@ export default function ProfileClient({
   const handleSignOut = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
+    document.cookie = "onboarded=; path=/; max-age=0";
     router.push("/login");
   };
 
